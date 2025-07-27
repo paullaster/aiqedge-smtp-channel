@@ -13,7 +13,7 @@ A Laravel notification channel for sending emails via the AIQEDGE SMTP API. This
 Install the package via Composer:
 
 ```bash
-composer require aiqedge/smtp-channel
+composer require aiqedge/smtp-notifications-channel
 ```
 
 ## Configuration
