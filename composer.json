@@ -1,0 +1,31 @@
+{
+  "name": "aiqedge/smtp-notifications-channel",
+  "description": "Laravel Notification Channel for the AIQEDGE-SMTP service.",
+  "type": "laravel-package",
+  "require": {
+    "php": "^8.0",
+    "illuminate/notifications": "^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
+    "illuminate/support": "^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
+    "illuminate/http": "^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Aiqedge\\SmtpNotificationsChannel\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "paullaster",
+      "email": "paullasterokoth98@gmail.com"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Aiqedge\\SmtpNotificationsChannel\\AiqedgeSmtpServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "dev"
+}
