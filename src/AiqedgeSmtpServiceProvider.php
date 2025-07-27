@@ -9,15 +9,16 @@ class AiqedgeSmtpServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        // When Laravel asks for the 'aiqedge_smtp' channel...
         Notification::extend('aiqedge_smtp', function ($app) {
 
-            // Fetch the config values from the service container here, ONCE.
-            $apiUrl = $app['config']->get('services.aiqedge_smtp.url');
-            $apiKey = $app['config']->get('services.aiqedge_smtp.key');
+            $config = $app['config']->get('services.aiqedge_smtp');
 
-            // Pass the resolved config values into the channel's constructor.
-            return new AiqedgeSmtpChannel($apiUrl, $apiKey);
+            // Pass all the required config values into the channel's constructor.
+            return new AiqedgeSmtpChannel(
+                $config['url'] ?? '',
+                $config['key'] ?? '',
+                $config['regards'] ?? [] // Use a default empty array to prevent errors
+            );
         });
 
         $this->publishes([
@@ -29,7 +30,7 @@ class AiqedgeSmtpServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(
             __DIR__ . '/../config/aiqedge_smtp.php',
-            'services.aiqedge_smtp'
+            'services'
         );
     }
 }

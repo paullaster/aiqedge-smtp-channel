@@ -8,31 +8,29 @@ use Illuminate\Support\Facades\Log;
 
 class AiqedgeSmtpChannel
 {
-    /**
-     * The URL for the AIQEDGE-SMTP API.
-     *
-     * @var string
-     */
     protected string $apiUrl;
+    protected string $apiKey;
 
     /**
-     * The API key for the AIQEDGE-SMTP service.
+     * The default "regards" data from the config.
      *
-     * @var string
+     * @var array
      */
-    protected string $apiKey;
+    protected array $defaultRegards;
 
     /**
      * Create a new AIQEDGE-SMTP channel instance.
      *
      * @param string $apiUrl
      * @param string $apiKey
+     * @param array  $defaultRegards
      * @return void
      */
-    public function __construct(string $apiUrl, string $apiKey)
+    public function __construct(string $apiUrl, string $apiKey, array $defaultRegards)
     {
         $this->apiUrl = $apiUrl;
         $this->apiKey = $apiKey;
+        $this->defaultRegards = $defaultRegards;
     }
 
     /**
@@ -46,7 +44,14 @@ class AiqedgeSmtpChannel
     {
         $message = $notification->toAiqedgeSmtp($notifiable);
 
-        // Use the properties that were set in the constructor
+        // --- Logic to merge the default regards ---
+        // If the notification payload does NOT already have a 'regards' key,
+        // and our default regards from the config is not empty, add it.
+        if (!isset($message['regards']) && !empty($this->defaultRegards)) {
+            $message['regards'] = $this->defaultRegards;
+        }
+        // ---------------------------------------------
+
         $endpoint = "{$this->apiUrl}/{$this->apiKey}/send";
 
         $response = Http::post($endpoint, $message);
